@@ -1,7 +1,5 @@
 .venv/
 venv/
-env/
-ENV/
 *.pyc
 *.pyo
 __pycache__/
@@ -11,8 +9,6 @@ database.db
 
 .vscode/
 .idea/
-*.sublime-workspace
-*.sublime-project
 
 *.log
 *.tmp
