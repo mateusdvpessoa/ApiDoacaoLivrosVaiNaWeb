@@ -26,33 +26,39 @@ init_db()
 def homepage():
     return render_template('index.html')
 
-@app.route('/doar', methods=['POST'])
+@app.route("/doar", methods=['POST'])
 def doar():
-
+    
     dados = request.get_json()
 
-    titulo = dados.get('titulo')
-    categoria = dados.get('categoria')
-    autor = dados.get('autor')
-    imagem_url = dados.get('imagem_url')
+    
+    titulo = dados.get("titulo")
+    categoria = dados.get("categoria")
+    autor = dados.get("autor")
+    imagem_url = dados.get("imagem_url")
 
-    if not all(titulo or not categoria or not autor or not imagem_url):
-        return jsonify({"erro": "Todos os campos são obrigatórios"}), 400
+    
+    if not all([titulo, categoria, autor, imagem_url]):
+        
+        return jsonify({'erro': 'Todos os campos são obrigatórios'}), 400
 
+    
     with sqlite3.connect('database.db') as conn:
-        conn.execute(f""" INSERT INTO livros (titulo, categoria, autor, imagem_url)
-                    VALUES(?,?,?,?)
-                    """,(titulo, categoria, autor, imagem_url))
-
+        conn.execute(""" INSERT INTO livros (titulo, categoria, autor, imagem_url)
+                         VALUES(?,?,?,?)
+                         """, (titulo, categoria, autor, imagem_url))
+        
         conn.commit()
 
-        return jsonify({"mensagem": "Livro cadastrado com sucesso"}), 201
+        
+        return jsonify({'mensagem': 'Livros cadastrados com sucesso'}), 201
+
 
 @app.route('/livros',methods=['GET'])
 def listar_livros():
     with sqlite3.connect('database.db') as  conn:
 
-        livros = conn.execute(f"SELECT * FROM livros").fetchall()
+        livros = conn.execute("SELECT * FROM livros").fetchall()
 
         livros_formatados = []
 
